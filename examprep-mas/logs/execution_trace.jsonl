@@ -1,3 +1,4 @@
+
 {"stage": "input_received", "agent": "content_agent", "input": {"topic": "Machine Learning", "difficulty": "easy", "time_minutes": 30, "study_plan": ["Review basic math and probability for machine learning", "Learn about supervised and unsupervised learning algorithms", "Practice simple classification problems using decision trees", "Understand the concept of overfitting and underfitting in models", "Quick review of step 4 to reinforce understanding"]}}
 {"stage": "tool_call", "tool": "read_notes", "input": "Machine Learning"}
 {"stage": "tool_output", "tool": "read_notes", "output_preview": "Machine Learning is a branch of artificial intelligence that allows systems to learn from data.\n\nSup"}
@@ -58,3 +59,8 @@
 {"stage": "tool_output", "tool": "read_notes", "output_preview": "Machine Learning is a branch of Artificial Intelligence (AI) that enables systems to learn patterns "}
 {"stage": "llm_call", "model": "qwen2.5:3b", "prompt_preview": "\nTopic: Machine Learning\nDifficulty: easy\nTime available: 30 minutes\n\nGuidance:\nExplain in very simple terms using short sentences.\n\nTime Guidance:\nProvide moderate detail.\n\nStudy Plan:\n- Review basic"}
 {"stage": "output_generated", "agent": "content_agent", "status": "success", "output_length": 867, "output_preview": "# Topic: Machine Learning\n\n## 1. Review basic mathematical operations and notation used in ML.\n- Basic arithmetic, probabilities, statistics are crucial for understanding machine learning algorithms.\n"}
+{"stage": "input_received", "agent": "content_agent", "input": {"topic": "Machine Learning", "difficulty": "easy", "time_minutes": 30, "study_plan": ["Introduction to Machine Learning", "Core concepts of Machine Learning", "Worked examples of Machine Learning", "Quick revision of Machine Learning"]}}
+{"stage": "tool_call", "tool": "read_notes", "input": "Machine Learning"}
+{"stage": "tool_output", "tool": "read_notes", "output_preview": "Machine Learning is a branch of artificial intelligence that allows systems to learn from data.\n\nSup"}
+{"stage": "llm_call", "model": "qwen2.5:3b", "prompt_preview": "\nTopic: Machine Learning\nDifficulty: easy\nTime available: 30 minutes\n\nGuidance:\nExplain in very simple terms using short sentences.\n\nTime Guidance:\nProvide moderate detail.\n\nStudy Plan:\n- Introduction"}
+{"stage": "output_generated", "agent": "content_agent", "status": "success", "output_length": 1569, "output_preview": "# Topic: Machine Learning\n\n## 1. Introduction to Machine Learning\n- Machine Learning is a field of AI that enables computers to learn and improve from experience without being explicitly programmed.\n-"}
