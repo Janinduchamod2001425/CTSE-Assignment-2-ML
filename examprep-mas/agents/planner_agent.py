@@ -3,6 +3,8 @@ from tools.planning_tools import create_study_plan
 
 
 def planner_agent(state: ExamPrepState) -> ExamPrepState:
+    print("Planner node executing through LangGraph...")
+
     topic = state["topic"]
     time_minutes = state["time_minutes"]
     difficulty = state["difficulty"]

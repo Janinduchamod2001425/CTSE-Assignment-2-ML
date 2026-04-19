@@ -1,9 +1,55 @@
 from typing import List
 
+from langchain_ollama import ChatOllama
+
+from app.config import MODEL_NAME, MAX_PLAN_STEPS, OLLAMA_TEMPERATURE
+from prompts.planner_prompt import PLANNER_PROMPT_TEMPLATE
+
+
+llm = ChatOllama(
+    model=MODEL_NAME,
+    temperature=OLLAMA_TEMPERATURE,
+)
+
+
+def _clean_plan_lines(raw_text: str) -> List[str]:
+    """
+    Clean model output into a list of study plan steps.
+
+    Args:
+        raw_text: Raw text returned by the language model.
+
+    Returns:
+        A cleaned list of non-empty study steps.
+    """
+    lines = raw_text.strip().splitlines()
+    cleaned_steps: List[str] = []
+
+    for line in lines:
+        step = line.strip()
+
+        if not step:
+            continue
+
+        # Remove common numbering formats like "1. ", "2) ", "- "
+        if len(step) > 2 and step[0].isdigit():
+            if ". " in step[:4]:
+                step = step.split(". ", 1)[1]
+            elif ") " in step[:4]:
+                step = step.split(") ", 1)[1]
+
+        if step.startswith("- "):
+            step = step[2:].strip()
+
+        if step:
+            cleaned_steps.append(step)
+
+    return cleaned_steps
+
 
 def create_study_plan(topic: str, minutes: int, difficulty: str) -> List[str]:
     """
-    Create a simple ordered study plan for the requested topic.
+    Generate a structured study plan using a local Ollama model.
 
     Args:
         topic: Study topic provided by the user.
@@ -11,27 +57,36 @@ def create_study_plan(topic: str, minutes: int, difficulty: str) -> List[str]:
         difficulty: Requested difficulty level.
 
     Returns:
-        A list of study plan steps.
+        A list of ordered study steps.
 
     Raises:
-        ValueError: If minutes is less than or equal to zero.
+        ValueError: If topic is empty or minutes is less than or equal to zero.
     """
+    topic = topic.strip()
+    difficulty = difficulty.strip().lower()
+
+    if not topic:
+        raise ValueError("topic must not be empty")
+
     if minutes <= 0:
         raise ValueError("minutes must be greater than 0")
 
-    difficulty = difficulty.lower().strip()
+    if difficulty not in {"easy", "medium", "hard"}:
+        raise ValueError("difficulty must be one of: easy, medium, hard")
 
-    plan = [f"Introduction to {topic}"]
+    prompt = PLANNER_PROMPT_TEMPLATE.format(
+        topic=topic,
+        minutes=minutes,
+        difficulty=difficulty,
+        max_steps=MAX_PLAN_STEPS,
+    )
 
-    if minutes >= 15:
-        plan.append(f"Core concepts of {topic}")
+    response = llm.invoke(prompt)
+    raw_output = response.content if hasattr(response, "content") else str(response)
 
-    if minutes >= 25:
-        plan.append(f"Worked examples of {topic}")
+    steps = _clean_plan_lines(raw_output)
 
-    if difficulty == "hard" and minutes >= 35:
-        plan.append(f"Advanced concepts of {topic}")
+    if not steps:
+        raise ValueError("model returned an empty study plan")
 
-    plan.append(f"Quick revision of {topic}")
-
-    return plan
+    return steps[:MAX_PLAN_STEPS]
