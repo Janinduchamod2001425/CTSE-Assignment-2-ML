@@ -1,4 +1,5 @@
 from agents.content_agent import content_agent
+from agents.planner_agent import planner_agent
 from tools.notes_tools import read_notes
 import pytest
 import json
@@ -128,8 +129,38 @@ def test_logging_fields():
     logs = result["logs"]
     assert len(logs) > 0
 
-    log_entry = logs[-1]
+    # Find input log (contains topic)
+    input_logs = [log for log in logs if log.get("stage") == "input_received"]
+    assert len(input_logs) > 0
 
-    assert "agent" in log_entry
-    assert "status" in log_entry
-    assert "topic" in log_entry
+    input_log = input_logs[0]
+
+    assert "agent" in input_log
+    assert "input" in input_log
+    assert "topic" in input_log["input"]
+
+    # Check output log exists
+    output_logs = [log for log in logs if log.get("stage") == "output_generated"]
+    assert len(output_logs) > 0
+
+    output_log = output_logs[0]
+    assert "output_length" in output_log
+
+
+
+def test_planner_content_integration():
+
+    state = {
+        "topic": "Machine Learning",
+        "time_minutes": 30,
+        "difficulty": "easy",
+        "study_plan": [],
+        "lesson_content": "",
+        "logs": []
+    }
+
+    state = planner_agent(state)
+    state = content_agent(state)
+
+    assert len(state["study_plan"]) > 0
+    assert len(state["lesson_content"]) > 0
