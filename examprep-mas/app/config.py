@@ -1,0 +1,3 @@
+MODEL_NAME = "qwen2.5:3b"
+DEFAULT_DIFFICULTY = "medium"
+MAX_PLAN_STEPS = 5
