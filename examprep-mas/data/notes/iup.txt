@@ -1,0 +1,43 @@
+Image Understanding and Processing (IUP)
+
+Image Processing involves transforming images to enhance quality or extract information.
+Image Understanding goes further by interpreting image content.
+
+Core Areas:
+1. Image Processing
+   - Filtering
+   - Noise removal
+   - Edge detection
+
+2. Computer Vision
+   - Object detection
+   - Image classification
+   - Facial recognition
+
+3. Feature Extraction
+   - Identifying important patterns like edges, textures
+
+4. Image Segmentation
+   - Dividing image into meaningful regions
+
+Techniques:
+- Convolution
+- Histogram Equalization
+- Thresholding
+
+Machine Learning in IUP:
+- CNN (Convolutional Neural Networks)
+- Deep Learning models for image recognition
+
+Applications:
+- Medical imaging
+- Autonomous vehicles
+- Surveillance systems
+- Face recognition systems
+
+Workflow:
+1. Image Acquisition
+2. Preprocessing
+3. Feature Extraction
+4. Model Application
+5. Interpretation
