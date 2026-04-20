@@ -1,5 +1,7 @@
-from tools.planning_tools import create_study_plan
+import pytest
+
 from app.config import MAX_PLAN_STEPS
+from tools.planning_tools import create_study_plan
 
 
 def test_create_study_plan_returns_list():
@@ -14,27 +16,18 @@ def test_create_study_plan_respects_max_size():
 
 
 def test_create_study_plan_invalid_minutes():
-    try:
+    with pytest.raises(ValueError, match="minutes must be greater than 0"):
         create_study_plan("OOP", 0, "medium")
-        assert False
-    except ValueError:
-        assert True
 
 
 def test_create_study_plan_invalid_difficulty():
-    try:
+    with pytest.raises(ValueError, match="difficulty must be one of: easy, medium, hard"):
         create_study_plan("OOP", 20, "expert")
-        assert False
-    except ValueError:
-        assert True
 
 
 def test_create_study_plan_rejects_empty_topic():
-    try:
+    with pytest.raises(ValueError, match="topic must not be empty"):
         create_study_plan("", 20, "easy")
-        assert False
-    except ValueError:
-        assert True
 
 
 def test_create_study_plan_all_steps_are_strings():

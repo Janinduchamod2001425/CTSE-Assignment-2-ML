@@ -22,6 +22,13 @@ def test_planner_agent_updates_state_and_logs():
     assert isinstance(result["study_plan"], list)
     assert len(result["study_plan"]) > 0
     assert len(result["logs"]) == 1
-    assert result["logs"][0]["agent"] == "planner_agent"
-    assert result["logs"][0]["tool_called"] == "create_study_plan"
-    assert result["logs"][0]["status"] == "success"
+
+    log = result["logs"][0]
+
+    assert log["agent"] == "planner_agent"
+    assert log["tool_called"] == "create_study_plan"
+    assert log["status"] == "success"
+    assert "timestamp" in log
+    assert "input" in log
+    assert "output" in log
+    assert log["output"]["step_count"] == len(result["study_plan"])
