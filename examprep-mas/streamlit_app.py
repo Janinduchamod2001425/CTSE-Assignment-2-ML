@@ -62,7 +62,7 @@ def apply_custom_css():
 
         /* Study plan step styling */
         .study-step {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
             padding: 16px;
             border-radius: 12px;
             margin-bottom: 12px;
@@ -83,7 +83,7 @@ def apply_custom_css():
         }
 
         .step-content {
-            color: #2c3e50;
+            color: #f7fafc;
             line-height: 1.6;
         }
 
