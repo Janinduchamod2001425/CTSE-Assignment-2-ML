@@ -1,8 +1,8 @@
-from app.graph import build_graph
+from app.graph import build_full_graph
 
 
 def test_graph_runs_and_executes_all_agents():
-    graph = build_graph()
+    graph = build_full_graph()
 
     initial_state = {
         "user_request": "Teach me DBMS basics in 20 minutes",
