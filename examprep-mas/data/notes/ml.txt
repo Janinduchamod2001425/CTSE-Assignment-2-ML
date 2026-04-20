@@ -1,0 +1,42 @@
+Machine Learning (ML)
+
+Machine Learning is a subset of Artificial Intelligence (AI) that enables systems to learn from data and improve performance without being explicitly programmed.
+
+Core Concepts:
+- Data: The foundation of ML. Can be structured or unstructured.
+- Features: Input variables used for prediction.
+- Model: Mathematical representation of patterns in data.
+- Training: Process of learning patterns from data.
+- Prediction: Using trained model to make decisions.
+
+Types of Machine Learning:
+1. Supervised Learning
+   - Uses labeled data
+   - Examples: Classification, Regression
+
+2. Unsupervised Learning
+   - Uses unlabeled data
+   - Examples: Clustering, Dimensionality Reduction
+
+3. Reinforcement Learning
+   - Learns through rewards and penalties
+   - Used in robotics and game AI
+
+Common Algorithms:
+- Linear Regression
+- Decision Trees
+- K-Nearest Neighbors (KNN)
+- Neural Networks
+
+Applications:
+- Spam detection
+- Image recognition
+- Recommendation systems
+- Fraud detection
+
+Machine Learning Workflow:
+1. Data Collection
+2. Data Preprocessing
+3. Model Training
+4. Evaluation
+5. Deployment

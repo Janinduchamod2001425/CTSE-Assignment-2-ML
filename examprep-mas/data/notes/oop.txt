@@ -1,0 +1,39 @@
+Object-Oriented Programming (OOP)
+
+OOP is a programming paradigm based on objects, which contain data and methods.
+
+Core Concepts:
+1. Class
+   - Blueprint for creating objects
+
+2. Object
+   - Instance of a class
+
+3. Encapsulation
+   - Bundling data and methods together
+   - Restricts direct access to some components
+
+4. Inheritance
+   - Allows one class to inherit properties of another
+
+5. Polymorphism
+   - Same method behaves differently based on context
+
+6. Abstraction
+   - Hides implementation details, shows only functionality
+
+Advantages:
+- Code reusability
+- Better organization
+- Easier maintenance
+- Scalability
+
+Example:
+Class: Car
+Object: Toyota, BMW
+
+OOP Languages:
+- Java
+- Python
+- C++
+- C#
