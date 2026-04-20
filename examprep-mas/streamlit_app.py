@@ -3,7 +3,7 @@ import json
 import streamlit as st
 from datetime import datetime
 
-from app.graph import build_graph
+from app.graph import build_full_graph
 
 SUPPORTED_TOPICS = {
     "Machine Learning": "ml.txt",
@@ -553,7 +553,7 @@ def main() -> None:
             status_text.text("📋 Creating study plan...")
             progress_bar.progress(20)
 
-            graph = build_graph()
+            graph = build_full_graph()
             result = graph.invoke(initial_state)
 
             status_text.text("📚 Generating learning content...")
@@ -605,7 +605,7 @@ def main() -> None:
             if st.button("✅ Submit Answers for Evaluation", use_container_width=True):
                 with st.spinner("📊 Analyzing your responses..."):
                     result["student_answers"] = answers
-                    graph = build_graph()
+                    graph = build_full_graph()
                     updated_result = graph.invoke(result)
                     st.session_state["result"] = updated_result
                     st.session_state["answers_submitted"] = True
