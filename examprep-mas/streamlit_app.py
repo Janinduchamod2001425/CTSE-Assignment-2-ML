@@ -3,7 +3,8 @@ import json
 import streamlit as st
 from datetime import datetime
 
-from app.graph import build_full_graph
+from app.graph import build_prep_graph, build_quiz_graph
+from agents.evaluator_agent import evaluator_agent
 
 SUPPORTED_TOPICS = {
     "Machine Learning": "ml.txt",
@@ -99,13 +100,14 @@ def apply_custom_css():
         }
 
         /* Quiz styling */
-        .quiz-question {
+       .quiz-question {
             background: #ffffff;
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
             border: 2px solid #e9ecef;
             transition: all 0.3s ease;
+            color: #2c3e50;
         }
 
         .quiz-question:hover {
@@ -255,6 +257,7 @@ def resolve_notes_file(topic: str, selected_file: str | None = None) -> tuple[st
 def initialize_session_state() -> None:
     defaults = {
         "result": None,
+        "prep_completed": False,
         "quiz_generated": False,
         "answers_submitted": False,
         "notes_found": False,
@@ -277,6 +280,10 @@ def build_initial_state(topic: str, time_minutes: int, difficulty: str, notes_fi
         "notes_file_path": notes_file_path,
         "study_plan": [],
         "lesson_content": "",
+        "num_quiz_questions": 5,
+        "quiz_level": "intermediate",
+        "quiz_style": "practice",
+        "question_type_mode": "mixed",
         "quiz_questions": [],
         "answer_key": [],
         "student_answers": [],
@@ -366,16 +373,48 @@ def render_quiz(questions: list) -> list[str]:
     answers: list[str] = []
 
     for i, q in enumerate(questions, 1):
-        question_text = q if isinstance(q, str) else str(q)
+        if isinstance(q, dict):
+            question_text = q.get("question", "")
+            question_type = q.get("type", "short_answer")
+            level = q.get("level", "")
+            options = q.get("options", [])
+            hint = q.get("hint", "")
+        else:
+            question_text = str(q)
+            question_type = "short_answer"
+            level = ""
+            options = []
+            hint = ""
+
         st.markdown(f"""
         <div class="quiz-question">
             <div class="question-text">Question {i}</div>
             <div>{question_text}</div>
         </div>
         """, unsafe_allow_html=True)
-        answer = st.text_area(f"Your Answer", key=f"answer_{i}",
-                              placeholder="Type your answer here...", height=100)
-        answers.append(answer)
+
+        if level:
+            st.caption(f"Level: {level}")
+
+        if question_type == "mcq" and options:
+            answer = st.radio(
+                f"Choose your answer for Question {i}",
+                options,
+                key=f"answer_{i}",
+                index=None
+            )
+            answers.append(answer if answer is not None else "")
+        else:
+            answer = st.text_area(
+                f"Your Answer for Question {i}",
+                key=f"answer_{i}",
+                placeholder="Type your answer here...",
+                height=100
+            )
+            answers.append(answer)
+
+        if hint:
+            st.caption(f"Hint: {hint}")
 
     st.markdown('</div>', unsafe_allow_html=True)
     return answers
@@ -389,7 +428,6 @@ def render_evaluation(result: dict) -> None:
     total = result.get('total', 1)
     percentage = (score / total) * 100 if total > 0 else 0
 
-    # Score display
     st.markdown(f"""
     <div class="score-card">
         <div>Your Score</div>
@@ -398,18 +436,15 @@ def render_evaluation(result: dict) -> None:
     </div>
     """, unsafe_allow_html=True)
 
-    # Feedback
     feedback = result.get('feedback', '')
     if feedback:
         st.markdown(f'<div class="feedback-text">💬 {feedback}</div>', unsafe_allow_html=True)
 
-    # Weak areas
     if "weak_areas" in result and result["weak_areas"]:
         st.markdown("#### 🎯 Areas for Improvement")
         for item in result["weak_areas"]:
             st.markdown(f"- ⚠️ {item}")
 
-    # Suggestions
     if "suggestions" in result and result["suggestions"]:
         st.markdown("#### 💡 Recommendations")
         for item in result["suggestions"]:
@@ -439,15 +474,18 @@ def render_progress_bar(current_step: str):
             if idx < current_index:
                 st.markdown(
                     f'<div style="text-align:center"><span class="progress-step completed">✓</span><br>{step}</div>',
-                    unsafe_allow_html=True)
+                    unsafe_allow_html=True
+                )
             elif idx == current_index:
                 st.markdown(
                     f'<div style="text-align:center"><span class="progress-step active">{idx + 1}</span><br>{step}</div>',
-                    unsafe_allow_html=True)
+                    unsafe_allow_html=True
+                )
             else:
                 st.markdown(
                     f'<div style="text-align:center"><span class="progress-step">{idx + 1}</span><br>{step}</div>',
-                    unsafe_allow_html=True)
+                    unsafe_allow_html=True
+                )
 
 
 def main() -> None:
@@ -461,7 +499,6 @@ def main() -> None:
     apply_custom_css()
     initialize_session_state()
 
-    # Header
     st.markdown("""
     <div class="main-header">
         <h1>🎓 ExamPrep MAS</h1>
@@ -470,7 +507,6 @@ def main() -> None:
     </div>
     """, unsafe_allow_html=True)
 
-    # Main content area
     col1, col2, col3 = st.columns([2, 3, 1])
 
     with col1:
@@ -497,7 +533,6 @@ def main() -> None:
                 )
                 topic = selected_topic
                 selected_file = SUPPORTED_TOPICS[selected_topic]
-
             else:
                 st.info("💡 Custom topics will use LLM fallback if no notes file is found.")
                 custom_topic = st.text_input(
@@ -546,36 +581,31 @@ def main() -> None:
                 notes_file_path=notes_file_path,
             )
 
-            # Show progress
             progress_bar = st.progress(0)
             status_text = st.empty()
 
             status_text.text("📋 Creating study plan...")
-            progress_bar.progress(20)
+            progress_bar.progress(30)
 
-            graph = build_full_graph()
-            result = graph.invoke(initial_state)
+            prep_graph = build_prep_graph()
+            result = prep_graph.invoke(initial_state)
 
             status_text.text("📚 Generating learning content...")
-            progress_bar.progress(50)
-
-            st.session_state["result"] = result
-            st.session_state["quiz_generated"] = True
-            st.session_state["answers_submitted"] = False
-
-            status_text.text("✍️ Preparing assessment...")
             progress_bar.progress(80)
 
-            status_text.text("✅ Session ready!")
+            st.session_state["result"] = result
+            st.session_state["prep_completed"] = True
+            st.session_state["quiz_generated"] = False
+            st.session_state["answers_submitted"] = False
+
+            status_text.text("✅ Study content ready!")
             progress_bar.progress(100)
 
             st.rerun()
 
-    # Display session content if available
     if st.session_state["result"]:
         result = st.session_state["result"]
 
-        # Sidebar with session info
         render_sidebar_info(
             st.session_state.get("selected_topic", ""),
             result.get("difficulty", "medium"),
@@ -583,13 +613,13 @@ def main() -> None:
             st.session_state.get("notes_found", False)
         )
 
-        # Progress indicator
-        if not st.session_state["answers_submitted"]:
+        if not st.session_state["quiz_generated"]:
             render_progress_bar("Learn")
+        elif not st.session_state["answers_submitted"]:
+            render_progress_bar("Quiz")
         else:
             render_progress_bar("Evaluate")
 
-        # Session content
         if st.session_state["notes_found"]:
             st.info(f"📄 Using local study materials from: `{st.session_state['notes_path']}`")
         else:
@@ -598,31 +628,90 @@ def main() -> None:
         render_study_plan(result["study_plan"])
         render_lesson(result["lesson_content"])
 
-        answers = render_quiz(result["quiz_questions"])
+        if st.session_state["prep_completed"] and not st.session_state["quiz_generated"]:
+            st.markdown('<div class="custom-card">', unsafe_allow_html=True)
+            st.markdown("### ✍️ Generate Quiz")
+            st.markdown("*Choose your quiz preferences, then generate the quiz*")
 
-        col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
-        with col_btn2:
-            if st.button("✅ Submit Answers for Evaluation", use_container_width=True):
-                with st.spinner("📊 Analyzing your responses..."):
-                    result["student_answers"] = answers
-                    graph = build_full_graph()
-                    updated_result = graph.invoke(result)
+            with st.form("quiz_settings_form", clear_on_submit=False):
+                col_q1, col_q2 = st.columns(2)
+
+                with col_q1:
+                    num_quiz_questions = st.number_input(
+                        "How many quiz questions do you want?",
+                        min_value=1,
+                        max_value=20,
+                        value=int(result.get("num_quiz_questions", 5)),
+                        step=1
+                    )
+
+                    quiz_level = st.selectbox(
+                        "Select quiz level",
+                        ["basic", "intermediate", "difficult"],
+                        index=["basic", "intermediate", "difficult"].index(result.get("quiz_level", "intermediate"))
+                        if result.get("quiz_level", "intermediate") in ["basic", "intermediate", "difficult"]
+                        else 1
+                    )
+
+                with col_q2:
+                    quiz_style = st.selectbox(
+                        "Select quiz style",
+                        ["exam", "practice", "revision", "challenge"],
+                        index=["exam", "practice", "revision", "challenge"].index(result.get("quiz_style", "practice"))
+                        if result.get("quiz_style", "practice") in ["exam", "practice", "revision", "challenge"]
+                        else 1
+                    )
+
+                    question_type_mode = st.selectbox(
+                        "Select question type",
+                        ["mixed", "mcq", "short_answer"],
+                        index=["mixed", "mcq", "short_answer"].index(result.get("question_type_mode", "mixed"))
+                        if result.get("question_type_mode", "mixed") in ["mixed", "mcq", "short_answer"]
+                        else 0
+                    )
+
+                quiz_submit = st.form_submit_button("✍️ Generate Quiz", use_container_width=True)
+
+            st.markdown('</div>', unsafe_allow_html=True)
+
+            if quiz_submit:
+                with st.spinner("✍️ Generating quiz based on your selected options..."):
+                    result["num_quiz_questions"] = int(num_quiz_questions)
+                    result["quiz_level"] = quiz_level
+                    result["quiz_style"] = quiz_style
+                    result["question_type_mode"] = question_type_mode
+
+                    quiz_graph = build_quiz_graph()
+                    updated_result = quiz_graph.invoke(result)
+
                     st.session_state["result"] = updated_result
-                    st.session_state["answers_submitted"] = True
-                    save_result(updated_result)
+                    st.session_state["quiz_generated"] = True
+                    st.session_state["answers_submitted"] = False
                     st.rerun()
+
+        if st.session_state["quiz_generated"]:
+            answers = render_quiz(result["quiz_questions"])
+
+            col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+            with col_btn2:
+                if st.button("Submit Answers for Evaluation", use_container_width=True):
+                    with st.spinner("Analyzing your responses..."):
+                        result["student_answers"] = answers
+                        updated_result = evaluator_agent(result)
+                        st.session_state["result"] = updated_result
+                        st.session_state["answers_submitted"] = True
+                        save_result(updated_result)
+                        st.rerun()
 
     if st.session_state["result"] and st.session_state["answers_submitted"]:
         result = st.session_state["result"]
         render_evaluation(result["evaluation_result"])
         render_logs(result["logs"])
 
-        # Download button for session report
         if st.button("📥 Download Session Report", use_container_width=True):
             save_result(result)
             st.success("✅ Report saved to outputs/session_reports/")
 
-    # Footer
     st.markdown("---")
     st.markdown(
         "<div style='text-align: center; color: #6c757d; font-size: 0.85rem;'>"
