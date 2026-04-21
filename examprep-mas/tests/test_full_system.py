@@ -1,5 +1,6 @@
 from agents.content_agent import content_agent
 from agents.planner_agent import planner_agent
+from agents.quiz_agent import quiz_agent
 # from agents.quiz_agent import quiz_agent
 # from agents.evaluator_agent import evaluator_agent
 
@@ -162,11 +163,105 @@ def test_full_pipeline_content_agent():
     # state = evaluator_agent(state)
     # assert "score" in state["evaluation_result"]
 
-
 # -------------------------------------
 # Quiz Agent Test
 # -------------------------------------
+def test_full_pipeline_quiz_agent():
+    state = {
+        "user_request": "Study Machine Learning in 30 minutes",
+        "topic": "Machine Learning",
+        "time_minutes": 30,
+        "difficulty": "medium",
+        "notes_file_path": "data/notes/ml.txt",
+        "study_plan": [
+            "Introduction to Machine Learning",
+            "Core concepts of Machine Learning",
+            "Worked examples of Machine Learning",
+            "Quick revision of Machine Learning"
+        ],
+        "lesson_content": (
+            "# Topic: Machine Learning\n\n"
+            "## 1. Introduction\n"
+            "Machine Learning is a field of AI that enables systems to learn from data.\n\n"
+            "## 2. Core Concepts\n"
+            "Supervised learning, unsupervised learning, and reinforcement learning are major types.\n\n"
+            "## 3. Applications\n"
+            "It is used in classification, recommendation systems, and image recognition.\n\n"
+            "Summary: Machine Learning helps computers learn patterns from data."
+        ),
+        "num_quiz_questions": 5,
+        "quiz_level": "intermediate",
+        "quiz_style": "practice",
+        "question_type_mode": "mixed",
+        "quiz_questions": [],
+        "answer_key": [],
+        "student_answers": [],
+        "evaluation_result": {},
+        "logs": []
+    }
 
+    state = quiz_agent(state)
+
+    assert "quiz_questions" in state
+    assert isinstance(state["quiz_questions"], list)
+    assert len(state["quiz_questions"]) > 0
+
+    assert "answer_key" in state
+    assert isinstance(state["answer_key"], list)
+    assert len(state["answer_key"]) > 0
+
+    assert len(state["quiz_questions"]) == 5
+    assert len(state["answer_key"]) == 5
+
+    for q in state["quiz_questions"]:
+        assert isinstance(q, dict)
+        assert "question" in q
+        assert "type" in q
+        assert isinstance(q["question"], str)
+        assert q["question"].strip() != ""
+
+        if q["type"] == "mcq":
+            assert "options" in q
+            assert isinstance(q["options"], list)
+            assert len(q["options"]) > 0
+
+    assert len(state["logs"]) > 0
+    quiz_logs = [log for log in state["logs"] if log.get("agent") == "quiz_agent"]
+    assert len(quiz_logs) > 0
+
+
+# -------------------------------------
+# Full Integration up to Quiz Agent
+# -------------------------------------
+def test_full_pipeline_planner_content_quiz_integration():
+    state = {
+        "user_request": "Study Machine Learning in 30 minutes",
+        "topic": "Machine Learning",
+        "time_minutes": 30,
+        "difficulty": "medium",
+        "notes_file_path": "data/notes/ml.txt",
+        "study_plan": [],
+        "lesson_content": "",
+        "num_quiz_questions": 5,
+        "quiz_level": "intermediate",
+        "quiz_style": "practice",
+        "question_type_mode": "mixed",
+        "quiz_questions": [],
+        "answer_key": [],
+        "student_answers": [],
+        "evaluation_result": {},
+        "logs": []
+    }
+
+    state = planner_agent(state)
+    assert len(state["study_plan"]) > 0
+
+    state = content_agent(state)
+    assert len(state["lesson_content"]) > 0
+
+    state = quiz_agent(state)
+    assert len(state["quiz_questions"]) > 0
+    assert len(state["answer_key"]) > 0
 
 
 
