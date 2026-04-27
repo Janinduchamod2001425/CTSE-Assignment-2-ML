@@ -1,6 +1,8 @@
 import os
 import json
 import streamlit as st
+import matplotlib.pyplot as plt
+
 from datetime import datetime
 
 from app.graph import build_prep_graph, build_quiz_graph
@@ -27,7 +29,7 @@ def apply_custom_css():
         .custom-card {
             background: white;
             border-radius: 16px;
-            padding: 24px;
+            padding: 10px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -236,6 +238,411 @@ def apply_custom_css():
             font-size: 1.2rem;
             font-weight: 600;
         }
+
+        /* ========== PLANNER ENHANCED STYLES ========== */
+
+        /* Planner Dashboard */
+        .planner-dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Stat Cards */
+        .planner-stat-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 16px;
+            border: 1px solid #e9ecef;
+            padding: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .planner-stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #fffffe;
+            margin-top: 5px;
+        }
+
+        /* Timeline */
+        .planner-timeline-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px;
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+
+        .planner-timeline-header h3 {
+            margin: 0;
+            color: white;
+        }
+
+        .planner-timeline-header p {
+            margin: 5px 0 0;
+            color: gray;
+        }
+
+        /* Modern Timeline Item Styles */
+        .planner-timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .timeline-marker {
+            width: 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .timeline-circle {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 28px rgba(102,126,234,0.6);
+        }
+        
+        .circle-number {
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .circle-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(102,126,234,0.6);
+            animation: pulse 2s infinite;
+            z-index: 1;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            70% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 48px;
+            width: 2px;
+            height: calc(100% + 30px);
+            background: linear-gradient(180deg, #667eea 0%, rgba(102,126,234,0.2) 100%);
+            transform: translateX(-50%);
+        }
+        
+        .planner-timeline-item:last-child .timeline-line {
+            display: none;
+        }
+        
+        /* Timeline Content - Glassmorphism Card */
+        .timeline-content {
+            flex: 1;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            margin-left: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .timeline-content:hover::before {
+            transform: translateX(0);
+        }
+        
+        .timeline-content:hover {
+            transform: translateX(8px);
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(102,126,234,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .step-badge {
+            background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #667eea;
+            border: 1px solid rgba(102,126,234,0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .badge-icon {
+            margin-right: 6px;
+            font-size: 0.85rem;
+        }
+        
+        .step-time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        
+        .time-icon {
+            font-size: 2rem;
+        }
+        
+        .time-value {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .step-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        
+        /* Meta Tags */
+        .step-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .meta-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.05);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.2s ease;
+        }
+        
+        .meta-tag:hover {
+            background: rgba(102,126,234,0.2);
+            border-color: rgba(102,126,234,0.3);
+        }
+        
+        .meta-icon {
+            font-size: 0.85rem;
+        }
+        
+        /* Progress Bar */
+        .step-progress {
+            margin-bottom: 20px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .progress-label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-percent {
+            font-size: 0.75rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .progress-bar-bg {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            border-radius: 12px;
+            position: relative;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-glow {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(200%);
+            }
+        }
+        
+        /* Action Button */
+        .step-action {
+            margin-top: 16px;
+        }
+        
+        .step-start-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+        
+        .step-start-btn:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.5);
+            gap: 12px;
+        }
+        
+        /* Suggestions Panel - Dark Theme */
+        .suggestions-panel {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            justify-content: center;
+            padding: 20px 10px 0px 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .suggestions-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+        
+        .suggestions-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .suggestions-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .suggestion-item:hover {
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(102,126,234,0.3);
+        }
+        
+        .suggestion-bullet {
+            font-size: 1.2rem;
+            margin-right: 12px;
+        }
+        
+        .suggestion-text {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.9rem;
+        }
+        
+        
         </style>
     """, unsafe_allow_html=True)
 
@@ -352,6 +759,134 @@ def render_study_plan(plan: list[str]) -> None:
     st.markdown('</div>', unsafe_allow_html=True)
 
 
+def render_enhanced_study_plan(plan: list[str], topic: str, difficulty: str, time_minutes: int) -> None:
+    """Professional course-style study plan display"""
+
+    st.markdown('<div class="planner-dashboard">', unsafe_allow_html=True)
+
+    # Header with stats
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("""
+            <div class="planner-stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-value">""" + str(len(plan)) + """</div>
+                <div class="stat-label">Learning Modules</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+            <div class="planner-stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-value">{time_minutes}</div>
+                <div class="stat-label">Minutes Total</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        difficulty_emoji = {"easy": "🟢", "medium": "🟡", "hard": "🔴"}
+        st.markdown(f"""
+            <div class="planner-stat-card">
+                <div class="stat-icon">{difficulty_emoji.get(difficulty, "📊")}</div>
+                <div class="stat-value">{difficulty.upper()}</div>
+                <div class="stat-label">Difficulty Level</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown("""
+            <div class="planner-stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value">95%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # Timeline view
+    st.markdown(f"""
+        <div class="planner-timeline-header">
+            <h3>📋 Your Learning Path</h3>
+            <p>Mastering <strong>{topic}</strong> in {time_minutes} minutes</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Interactive timeline
+    for i, step in enumerate(plan, 1):
+        # Estimate time per step
+        step_time = max(5, int(time_minutes / len(plan)))
+
+        st.markdown(f"""
+            <div class="planner-timeline-item">
+                <div class="timeline-marker">
+                    <div class="timeline-circle">
+                        <span class="circle-number">{i}</span>
+                        <div class="circle-pulse"></div>
+                    </div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <div class="step-badge">
+                            <span class="badge-icon">📌</span>
+                            MODULE {i:02d}
+                        </div>
+                        <div class="step-time">
+                            <span class="time-icon">⏱️</span>
+                            <span class="time-value">{step_time} min</span>
+                        </div>
+                    </div>
+                    <div class="step-title">{step}</div>
+                    <div class="step-meta">
+                        <div class="meta-tag">
+                            <span class="meta-icon">🎯</span>
+                            <span>Key Concept</span>
+                        </div>
+                        <div class="meta-tag">
+                            <span class="meta-icon">📚</span>
+                            <span>Interactive Learning</span>
+                        </div>
+                        <div class="meta-tag">
+                            <span class="meta-icon">✅</span>
+                            <span>Knowledge Check</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+def render_smart_suggestions(topic: str, difficulty: str) -> None:
+    """AI-powered study suggestions"""
+
+    st.markdown("""
+        <div class="suggestions-panel">
+            <div class="suggestions-header">
+                <span class="suggestions-icon">🧠</span>
+                <span>AI Study Tips</span>
+            </div>
+            <div class="suggestions-grid">
+    """, unsafe_allow_html=True)
+
+    tips = [
+        "🎯 Focus on understanding concepts before memorization",
+        "📝 Take notes of key terms you encounter",
+        "⏰ Take a 2-minute break every 15 minutes",
+        f"💡 Based on {difficulty} difficulty, expect challenging questions",
+        "🔄 Review weak areas after the quiz"
+    ]
+
+    for tip in tips:
+        st.markdown(f"""
+            <div class="suggestion-item">
+                <div class="suggestion-bullet">✨</div>
+                <div class="suggestion-text">{tip}</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('</div></div>', unsafe_allow_html=True)
+
 def render_lesson(content: str) -> None:
     st.markdown('<div class="custom-card">', unsafe_allow_html=True)
     st.markdown("### 📖 Learning Material")
@@ -420,14 +955,83 @@ def render_quiz(questions: list) -> list[str]:
     return answers
 
 
+# =========================
+# EVALUATOR ANALYTICS HELPERS
+# =========================
+
+def get_grade(percentage):
+    if percentage >= 85:
+        return "A"
+    elif percentage >= 70:
+        return "B"
+    elif percentage >= 50:
+        return "C"
+    else:
+        return "D"
+
+
+def render_score_chart(result):
+    correct = result["score"]
+    incorrect = result["total"] - result["score"]
+
+    labels = ["Correct", "Incorrect"]
+    values = [correct, incorrect]
+
+    plt.figure()
+    plt.pie(values, labels=labels, autopct='%1.1f%%')
+    plt.title("Performance Distribution")
+
+    st.pyplot(plt)
+
+
+def render_difficulty_chart(detailed_results):
+    stats = {}
+
+    for item in detailed_results:
+        level = item.get("level", "intermediate")
+        stats.setdefault(level, [0, 0])
+        stats[level][1] += 1
+
+        if item.get("is_correct"):
+            stats[level][0] += 1
+
+    levels = []
+    accuracy = []
+
+    for level, (correct, total) in stats.items():
+        levels.append(level)
+        accuracy.append((correct / total) * 100)
+
+    plt.figure()
+    plt.bar(levels, accuracy)
+    plt.ylabel("Accuracy %")
+    plt.title("Performance by Difficulty")
+
+    st.pyplot(plt)
+
+
+def render_question_analysis(detailed_results):
+    st.markdown("### 📊 Question Analysis")
+
+    for i, item in enumerate(detailed_results, 1):
+        if item["is_correct"]:
+            st.success(f"Q{i} Correct")
+        else:
+            st.error(f"Q{i} Incorrect")
+            st.write(f"Correct Answer: {item['correct_answer']}")
+
+
 def render_evaluation(result: dict) -> None:
     st.markdown('<div class="custom-card">', unsafe_allow_html=True)
     st.markdown("### 📊 Performance Analysis")
 
     score = result.get('score', 0)
     total = result.get('total', 1)
-    percentage = (score / total) * 100 if total > 0 else 0
+    percentage = result.get('percentage', (score / total) * 100)
 
+    grade = get_grade(percentage)
+
+    # Score card
     st.markdown(f"""
     <div class="score-card">
         <div>Your Score</div>
@@ -436,19 +1040,37 @@ def render_evaluation(result: dict) -> None:
     </div>
     """, unsafe_allow_html=True)
 
-    feedback = result.get('feedback', '')
-    if feedback:
-        st.markdown(f'<div class="feedback-text">💬 {feedback}</div>', unsafe_allow_html=True)
+    # Grade
+    st.markdown(f"### 🎓 Grade: {grade}")
 
-    if "weak_areas" in result and result["weak_areas"]:
-        st.markdown("#### 🎯 Areas for Improvement")
-        for item in result["weak_areas"]:
-            st.markdown(f"- ⚠️ {item}")
+    # Progress bar
+    st.progress(percentage / 100)
 
-    if "suggestions" in result and result["suggestions"]:
-        st.markdown("#### 💡 Recommendations")
-        for item in result["suggestions"]:
-            st.markdown(f"- ✅ {item}")
+    # Charts
+    render_score_chart(result)
+
+    if "detailed_results" in result:
+        render_difficulty_chart(result["detailed_results"])
+
+    # Feedback
+    if result.get("feedback"):
+        st.markdown(f'<div class="feedback-text">💬 {result["feedback"]}</div>', unsafe_allow_html=True)
+
+    # Weak areas
+    if result.get("weak_areas"):
+        st.markdown("### ⚠️ Areas for Improvement")
+        for w in result["weak_areas"]:
+            st.warning(w)
+
+    # Suggestions
+    if result.get("suggestions"):
+        st.markdown("### 💡 Recommendations")
+        for s in result["suggestions"]:
+            st.success(s)
+
+    # Question analysis
+    if "detailed_results" in result:
+        render_question_analysis(result["detailed_results"])
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -625,7 +1247,25 @@ def main() -> None:
         else:
             st.info("🌐 Generating content using LLM knowledge base (no local notes found)")
 
-        render_study_plan(result["study_plan"])
+        # Enhanced Planner Display
+        if st.session_state["prep_completed"] and not st.session_state["quiz_generated"]:
+            # Show enhanced planner with all features
+            render_enhanced_study_plan(
+                result["study_plan"],
+                st.session_state.get("selected_topic", ""),
+                result.get("difficulty", "medium"),
+                result.get("time_minutes", 30)
+            )
+
+            # Add smart suggestions
+            render_smart_suggestions(
+                st.session_state.get("selected_topic", ""),
+                result.get("difficulty", "medium")
+            )
+        else:
+            # Standard view for later stages
+            render_study_plan(result["study_plan"])
+
         render_lesson(result["lesson_content"])
 
         if st.session_state["prep_completed"] and not st.session_state["quiz_generated"]:

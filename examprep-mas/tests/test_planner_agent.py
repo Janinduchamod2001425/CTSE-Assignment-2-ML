@@ -1,117 +1,114 @@
-from typing import List
-from langchain_ollama import ChatOllama
+from unittest.mock import Mock, patch
 
-from app.config import MODEL_NAME, MAX_PLAN_STEPS, OLLAMA_TEMPERATURE
-from prompts.planner_prompt import PLANNER_PROMPT_TEMPLATE
+import pytest
 
-
-llm = ChatOllama(
-    model=MODEL_NAME,
-    temperature=OLLAMA_TEMPERATURE,
-)
-
-def _clean_plan_lines(raw_text: str) -> List[str]:
-    """
-    Convert raw LLM output into a clean list of study plan steps.
-
-    Args:
-        raw_text: The raw text returned by the language model.
-
-    Returns:
-        A cleaned list of non-empty study plan steps.
-    """
-    lines = raw_text.strip().splitlines()
-    cleaned_steps: List[str] = []
-
-    for line in lines:
-        step = line.strip()
-
-        if not step:
-            continue
-
-        if len(step) > 2 and step[0].isdigit():
-            if ". " in step[:4]:
-                step = step.split(". ", 1)[1]
-            elif ") " in step[:4]:
-                step = step.split(") ", 1)[1]
-
-        if step.startswith("- "):
-            step = step[2:].strip()
-
-        if step:
-            cleaned_steps.append(step)
-
-    return cleaned_steps
+from app.config import MAX_PLAN_STEPS
+from tools.planning_tools import create_study_plan
 
 
-def _fallback_plan(topic: str, difficulty: str) -> List[str]:
-    """
-    Generate a default rule-based study plan if LLM output is weak or unavailable.
+def test_create_study_plan_returns_list():
+    result = create_study_plan("Machine Learning", 30, "medium")
 
-    Args:
-        topic: The study topic.
-        difficulty: The requested difficulty level.
-
-    Returns:
-        A fallback study plan as a list of steps.
-    """
-    base_plan = [
-        f"Review the definition and purpose of {topic}.",
-        f"Study the main concepts and principles of {topic}.",
-        f"Examine key examples or practical applications of {topic}.",
-        f"Practice a few concept-based questions related to {topic}.",
-        f"Summarize the most important points of {topic} for quick revision."
-    ]
-
-    if difficulty == "hard":
-        base_plan.insert(3, f"Analyze more advanced or challenging aspects of {topic}.")
-
-    return base_plan[:MAX_PLAN_STEPS]
+    assert isinstance(result, list)
+    assert len(result) > 0
 
 
-def create_study_plan(topic: str, minutes: int, difficulty: str) -> List[str]:
-    """
-    Generate a structured study plan using a local LLM with fallback handling.
+def test_create_study_plan_respects_max_size():
+    result = create_study_plan("DBMS", 45, "hard")
 
-    Args:
-        topic: Study topic provided by the user.
-        minutes: Available study time in minutes.
-        difficulty: Difficulty level (easy, medium, hard).
+    assert len(result) <= MAX_PLAN_STEPS
 
-    Returns:
-        A list of study plan steps.
 
-    Raises:
-        ValueError: If topic is empty, time is invalid, or difficulty is unsupported.
-    """
-    topic = topic.strip()
-    difficulty = difficulty.strip().lower()
+def test_create_study_plan_invalid_minutes():
+    with pytest.raises(ValueError, match="minutes must be greater than 0"):
+        create_study_plan("OOP", 0, "medium")
 
-    if not topic:
-        raise ValueError("topic must not be empty")
 
-    if minutes <= 0:
-        raise ValueError("minutes must be greater than 0")
+def test_create_study_plan_invalid_difficulty():
+    with pytest.raises(ValueError, match="difficulty must be one of: easy, medium, hard"):
+        create_study_plan("OOP", 20, "expert")
 
-    if difficulty not in {"easy", "medium", "hard"}:
-        raise ValueError("difficulty must be one of: easy, medium, hard")
 
-    prompt = PLANNER_PROMPT_TEMPLATE.format(
-        topic=topic,
-        minutes=minutes,
-        difficulty=difficulty,
-        max_steps=MAX_PLAN_STEPS,
+def test_create_study_plan_rejects_empty_topic():
+    with pytest.raises(ValueError, match="topic must not be empty"):
+        create_study_plan("", 20, "easy")
+
+
+def test_create_study_plan_all_steps_are_strings():
+    result = create_study_plan("Machine Learning", 30, "medium")
+
+    assert all(isinstance(step, str) for step in result)
+
+
+def test_create_study_plan_no_empty_steps():
+    result = create_study_plan("Machine Learning", 30, "medium")
+
+    assert all(step.strip() != "" for step in result)
+
+
+def test_create_study_plan_structure_for_short_time():
+    result = create_study_plan("CTSE", 10, "easy")
+
+    assert isinstance(result, list)
+    assert len(result) > 0
+    assert len(result) <= MAX_PLAN_STEPS
+
+
+def test_create_study_plan_parses_mocked_llm_output():
+    mocked_response = Mock()
+    mocked_response.content = (
+        "1. Review the definition of Machine Learning\n"
+        "2. Study supervised and unsupervised learning\n"
+        "3. Understand common ML algorithms\n"
+        "4. Practice simple ML examples\n"
+        "5. Summarize key points"
     )
 
-    try:
-        response = llm.invoke(prompt)
-        raw_output = response.content if hasattr(response, "content") else str(response)
-        steps = _clean_plan_lines(raw_output)
+    with patch("tools.planning_tools.llm") as mocked_llm:
+        mocked_llm.invoke.return_value = mocked_response
+        result = create_study_plan("Machine Learning", 30, "medium")
 
-        if not steps or len(steps) < 3:
-            steps = _fallback_plan(topic, difficulty)
+    assert isinstance(result, list)
+    assert len(result) >= 3
+    assert len(result) <= MAX_PLAN_STEPS
+    assert result[0] == "Review the definition of Machine Learning"
 
-    except Exception:
-        steps = _fallback_plan(topic, difficulty)
 
-    return steps[:MAX_PLAN_STEPS]
+def test_create_study_plan_trims_numbering_from_mocked_output():
+    mocked_response = Mock()
+    mocked_response.content = (
+        "1. Introduction to DBMS\n"
+        "2. Core concepts of DBMS\n"
+        "3. Practice DBMS examples"
+    )
+
+    with patch("tools.planning_tools.llm") as mocked_llm:
+        mocked_llm.invoke.return_value = mocked_response
+        result = create_study_plan("DBMS", 20, "easy")
+
+    assert result[0] == "Introduction to DBMS"
+    assert result[1] == "Core concepts of DBMS"
+    assert result[2] == "Practice DBMS examples"
+
+
+def test_create_study_plan_uses_fallback_when_llm_fails():
+    with patch("tools.planning_tools.llm") as mocked_llm:
+        mocked_llm.invoke.side_effect = Exception("LLM failure")
+        result = create_study_plan("Machine Learning", 30, "medium")
+
+    assert isinstance(result, list)
+    assert len(result) > 0
+    assert len(result) <= MAX_PLAN_STEPS
+
+
+def test_create_study_plan_uses_fallback_for_weak_llm_output():
+    mocked_response = Mock()
+    mocked_response.content = "1. Too short"
+
+    with patch("tools.planning_tools.llm") as mocked_llm:
+        mocked_llm.invoke.return_value = mocked_response
+        result = create_study_plan("Machine Learning", 30, "medium")
+
+    assert isinstance(result, list)
+    assert len(result) >= 3
+    assert len(result) <= MAX_PLAN_STEPS
