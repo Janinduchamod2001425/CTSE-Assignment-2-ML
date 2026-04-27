@@ -2,3 +2,5 @@ langgraph
 langchain
 langchain-ollama
 pytest
+streamlit
+matplotlib

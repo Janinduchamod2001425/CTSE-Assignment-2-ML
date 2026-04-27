@@ -1,104 +1,279 @@
 {
-    "user_request": "Study Object Oriented Programming in 30 minutes",
-    "topic": "Object Oriented Programming",
+    "user_request": "Study Machine Learining in 30 minutes",
+    "topic": "Machine Learining",
     "time_minutes": 30,
-    "difficulty": "hard",
-    "notes_file_path": "data/notes/",
+    "difficulty": "medium",
+    "notes_file_path": "data/notes/ml.txt",
     "study_plan": [
-        "Review basic programming constructs like variables, data types, and control structures.",
-        "Study key principles of object-oriented programming such as classes, objects, inheritance, and polymorphism.",
-        "Practice creating simple class definitions and implementing basic methods in Python.",
-        "Solve a few medium-level OOP problems to reinforce understanding.",
-        "Quick review of the main points covered."
+        "Review basic statistics and probability theory",
+        "Study machine learning definitions, types, and applications",
+        "Understand linear regression and classification algorithms",
+        "Practice simple machine learning problems",
+        "Summarize key points for quick review"
     ],
-    "lesson_content": "Lesson generated based on study plan: Review basic programming constructs like variables, data types, and control structures., Study key principles of object-oriented programming such as classes, objects, inheritance, and polymorphism., Practice creating simple class definitions and implementing basic methods in Python., Solve a few medium-level OOP problems to reinforce understanding., Quick review of the main points covered.",
+    "lesson_content": "# Topic: Machine Learning\n\n## 1. Review Basic Statistics and Probability Theory\n- **Definition of Mean, Median, Mode:** The mean is the average of a set of numbers, the median is the middle number when they are arranged in order, and the mode is the most frequently occurring number.\n- **Probability Basics:** Probability measures the likelihood of an event happening. It ranges from 0 (impossible) to 1 (certain). \n    - **Event Notation:** Events are represented using capital letters like A or B.\n    - **Sample Space:** The set of all possible outcomes is called the sample space, denoted by S.\n\n## 2. Study Machine Learning Definitions and Types\n- **Machine Learning Definition:** Machine learning is a subset of artificial intelligence that enables computers to automatically improve from experience without being explicitly programmed.\n- **Types of Machine Learning:**\n    - Supervised Learning: The algorithm learns from labeled data. Examples include regression (predicting continuous outcomes) and classification (classifying input into discrete categories).\n    - Unsupervised Learning: Algorithms learn patterns in data without explicit labels. Examples are clustering (grouping similar instances together) and association rule learning.\n- **Applications:** Machine learning is used across various fields including healthcare, finance, retail, etc., for tasks such as fraud detection, recommendation systems, and predictive analysis.\n\n## 3. Understand Linear Regression and Classification Algorithms\n### Linear Regression:\n- **Linear Relationship:** It predicts a continuous outcome based on one or more independent variables.\n- **Equation of Line:** \\(y = mx + b\\), where m is the slope and b is the intercept.\n- **Cost Function:** Measures the error between predicted values (\\(\\hat{y}\\)) and actual values (y). Minimizing this function helps improve model accuracy.\n\n### Classification Algorithms:\n- **Binary vs. Multiclass:** Binary classification distinguishes between two classes, while multiclass involves more than two categories.\n- **K-Nearest Neighbors (kNN):** Classifies points based on their proximity to known data points.\n- **Logistic Regression:** Uses logistic function to model the probability of an event occurring.\n\n## Final Quick Revision Summary\n- Mean, median, and mode for basic statistics.\n- Understanding supervised versus unsupervised learning types.\n- Key terms: Supervised Learning (regression & classification), Unsupervised Learning (clustering, association rule learning).\n- Concept of linear regression and its equation.\n- Basics of k-Nearest Neighbors and logistic regression.",
+    "num_quiz_questions": 11,
+    "quiz_level": "difficult",
+    "quiz_style": "exam",
+    "question_type_mode": "mcq",
     "quiz_questions": [
-        "What is the main topic discussed?",
-        "Mention one key concept."
+        {
+            "id": 1,
+            "type": "short_answer",
+            "question": "Which of the following is NOT a type of machine learning?",
+            "options": [],
+            "correct_answer": "Reinforcement Learning",
+            "hint": "Machine learning can be categorized into supervised, unsupervised, and reinforcement learning.",
+            "level": "difficult"
+        },
+        {
+            "id": 2,
+            "type": "short_answer",
+            "question": "What does 'Regression' in regression analysis refer to ?",
+            "options": [],
+            "correct_answer": "Fitting a line through points of data",
+            "hint": "Linear regression involves finding the best fit line (or curve) that represents the relationship between variables.",
+            "level": "difficult"
+        },
+        {
+            "id": 3,
+            "type": "short_answer",
+            "question": "Which machine learning algorithm is typically used when we have multiple classes to predict?",
+            "options": [],
+            "correct_answer": "Multiclass Classification",
+            "hint": "Multiclass classification refers to a scenario with more than two categories to classify an input.",
+            "level": "difficult"
+        },
+        {
+            "id": 4,
+            "type": "short_answer",
+            "question": "Which of these is NOT an example of supervised learning?",
+            "options": [],
+            "correct_answer": "Clustering Analysis",
+            "hint": "Supervised learning involves labeled data, while unsupervised learning does not.",
+            "level": "difficult"
+        },
+        {
+            "id": 5,
+            "type": "short_answer",
+            "question": "What is the function used in Logistic Regression to model probability distribution?",
+            "options": [],
+            "correct_answer": "Logistic Function",
+            "hint": "Logistic regression uses a logistic function (S-shaped curve) to map predicted values between 0 and 1.",
+            "level": "difficult"
+        },
+        {
+            "id": 6,
+            "type": "short_answer",
+            "question": "Which of the following is an example of unsupervised learning?",
+            "options": [],
+            "correct_answer": "Association Rule Learning",
+            "hint": "Unsupervised learning does not require labeled data; association rule learning finds patterns in transactional data.",
+            "level": "difficult"
+        },
+        {
+            "id": 7,
+            "type": "short_answer",
+            "question": "Name one difference between supervised and unsupervised learning.",
+            "options": [],
+            "correct_answer": "",
+            "hint": "",
+            "level": "difficult"
+        },
+        {
+            "id": 8,
+            "type": "short_answer",
+            "question": "In logistic regression, what is the primary outcome we are trying to predict?",
+            "options": [],
+            "correct_answer": "Discrete category",
+            "hint": "Logistic regression outputs probabilities that can be interpreted as a discrete class membership.",
+            "level": "difficult"
+        },
+        {
+            "id": 9,
+            "type": "short_answer",
+            "question": "What does 'Clustering' in clustering algorithms refer to?",
+            "options": [],
+            "correct_answer": "",
+            "hint": "",
+            "level": "difficult"
+        },
+        {
+            "id": 10,
+            "type": "short_answer",
+            "question": "Which of the following is NOT a supervised learning algorithm?",
+            "options": [],
+            "correct_answer": "k-Nearest Neighbors",
+            "hint": "k-NN is unsupervised; it does not require labeled data.",
+            "level": "difficult"
+        },
+        {
+            "id": 11,
+            "type": "mcq",
+            "question": "Which option best relates to the topic 'Machine Learining'?",
+            "options": [
+                "An unrelated cooking recipe",
+                "A key concept in Machine Learining",
+                "A random sports strategy",
+                "A music performance style"
+            ],
+            "correct_answer": "A key concept in Machine Learining",
+            "hint": "Think about the main concept in Machine Learining.",
+            "level": "difficult"
+        }
     ],
     "answer_key": [
-        "Machine Learning",
-        "Supervised Learning"
+        {
+            "id": 1,
+            "type": "short_answer",
+            "correct_answer": "Reinforcement Learning"
+        },
+        {
+            "id": 2,
+            "type": "short_answer",
+            "correct_answer": "Fitting a line through points of data"
+        },
+        {
+            "id": 3,
+            "type": "short_answer",
+            "correct_answer": "Multiclass Classification"
+        },
+        {
+            "id": 4,
+            "type": "short_answer",
+            "correct_answer": "Clustering Analysis"
+        },
+        {
+            "id": 5,
+            "type": "short_answer",
+            "correct_answer": "Logistic Function"
+        },
+        {
+            "id": 6,
+            "type": "short_answer",
+            "correct_answer": "Association Rule Learning"
+        },
+        {
+            "id": 7,
+            "type": "short_answer",
+            "correct_answer": ""
+        },
+        {
+            "id": 8,
+            "type": "short_answer",
+            "correct_answer": "Discrete category"
+        },
+        {
+            "id": 9,
+            "type": "short_answer",
+            "correct_answer": ""
+        },
+        {
+            "id": 10,
+            "type": "short_answer",
+            "correct_answer": "k-Nearest Neighbors"
+        },
+        {
+            "id": 11,
+            "type": "mcq",
+            "correct_answer": "A key concept in Machine Learining"
+        }
     ],
     "student_answers": [
-        "oop",
-        "inheritance"
+        "",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "An unrelated cooking recipe"
     ],
     "evaluation_result": {
         "score": 0,
-        "total": 2,
+        "total": 11,
         "feedback": "Evaluation placeholder"
     },
     "logs": [
         {
             "agent": "planner_agent",
             "input": {
-                "topic": "Object Oriented Programming",
+                "topic": "Machine Learining",
                 "time_minutes": 30,
-                "difficulty": "hard"
+                "difficulty": "medium"
             },
             "output": {
                 "study_plan": [
-                    "Review basic programming constructs like variables, data types, and operators.",
-                    "Study principles of object-oriented programming such as classes, objects, inheritance, and encapsulation.",
-                    "Practice creating simple class structures with methods and attributes.",
-                    "Solve a few problems that involve applying these concepts to solve real-world scenarios.",
-                    "Quick review of the day's learning material."
+                    "Review basic statistics and probability theory",
+                    "Study machine learning definitions, types, and applications",
+                    "Understand linear regression and classification algorithms",
+                    "Practice simple machine learning problems",
+                    "Summarize key points for quick review"
                 ]
             }
         },
         {
+            "stage": "input_received",
             "agent": "content_agent",
-            "output": "Lesson generated based on study plan: Review basic programming constructs like variables, data types, and operators., Study principles of object-oriented programming such as classes, objects, inheritance, and encapsulation., Practice creating simple class structures with methods and attributes., Solve a few problems that involve applying these concepts to solve real-world scenarios., Quick review of the day's learning material."
-        },
-        {
-            "agent": "quiz_agent",
-            "output": [
-                "What is the main topic discussed?",
-                "Mention one key concept."
-            ]
-        },
-        {
-            "agent": "evaluator_agent",
-            "output": {
-                "score": 0,
-                "total": 2,
-                "feedback": "Evaluation placeholder"
-            }
-        },
-        {
-            "agent": "planner_agent",
             "input": {
-                "topic": "Object Oriented Programming",
+                "topic": "Machine Learining",
+                "difficulty": "medium",
                 "time_minutes": 30,
-                "difficulty": "hard"
-            },
-            "output": {
                 "study_plan": [
-                    "Review basic programming constructs like variables, data types, and control structures.",
-                    "Study key principles of object-oriented programming such as classes, objects, inheritance, and polymorphism.",
-                    "Practice creating simple class definitions and implementing basic methods in Python.",
-                    "Solve a few medium-level OOP problems to reinforce understanding.",
-                    "Quick review of the main points covered."
+                    "Review basic statistics and probability theory",
+                    "Study machine learning definitions, types, and applications",
+                    "Understand linear regression and classification algorithms",
+                    "Practice simple machine learning problems",
+                    "Summarize key points for quick review"
                 ]
             }
         },
         {
+            "stage": "tool_call",
+            "tool": "read_notes",
+            "input": "Machine Learining"
+        },
+        {
+            "stage": "tool_output",
+            "tool": "read_notes",
+            "output_preview": "Basic notes not available. Provide simple explanation."
+        },
+        {
+            "stage": "llm_call",
+            "model": "qwen2.5:3b",
+            "prompt_preview": "\nTopic: Machine Learining\nDifficulty: medium\nTime available: 30 minutes\n\nGuidance:\nProvide balanced explanations.\n\nTime Guidance:\nProvide moderate detail.\n\nStudy Plan:\n- Review basic statistics and pr"
+        },
+        {
+            "stage": "output_generated",
             "agent": "content_agent",
-            "output": "Lesson generated based on study plan: Review basic programming constructs like variables, data types, and control structures., Study key principles of object-oriented programming such as classes, objects, inheritance, and polymorphism., Practice creating simple class definitions and implementing basic methods in Python., Solve a few medium-level OOP problems to reinforce understanding., Quick review of the main points covered."
+            "status": "success",
+            "output_length": 2622,
+            "output_preview": "# Topic: Machine Learning\n\n## 1. Review Basic Statistics and Probability Theory\n- **Definition of Mean, Median, Mode:** The mean is the average of a set of numbers, the median is the middle number whe"
         },
         {
             "agent": "quiz_agent",
-            "output": [
-                "What is the main topic discussed?",
-                "Mention one key concept."
+            "status": "success",
+            "input": {
+                "topic": "Machine Learining",
+                "num_questions": 11,
+                "quiz_level": "difficult",
+                "quiz_style": "exam",
+                "question_type_mode": "mcq"
+            },
+            "output_preview": [
+                "Which of the following is NOT a type of machine learning?",
+                "What does 'Regression' in regression analysis refer to ?",
+                "Which machine learning algorithm is typically used when we have multiple classes to predict?"
             ]
         },
         {
             "agent": "evaluator_agent",
             "output": {
                 "score": 0,
-                "total": 2,
+                "total": 11,
                 "feedback": "Evaluation placeholder"
             }
         }

@@ -1,0 +1,267 @@
+{
+    "user_request": "Study Machine Learning in 30 minutes",
+    "topic": "Machine Learning",
+    "time_minutes": 30,
+    "difficulty": "medium",
+    "notes_file_path": "data\\notes\\ml.txt",
+    "study_plan": [
+        "Define key terms like supervised, unsupervised, and reinforcement learning.",
+        "Learn about linear regression and its use in predicting continuous outcomes.",
+        "Understand decision trees and how they can be used for classification tasks.",
+        "Apply knowledge by identifying a real-world problem that could benefit from machine learning.",
+        "Review all learned concepts to reinforce understanding before the exam."
+    ],
+    "lesson_content": "# Topic: Machine Learning\n\n## 1. Define key terms like supervised, unsupervised, and reinforcement learning.\n- **Supervised Learning**: Uses labeled data (input + correct output) to learn a mapping from inputs to outputs. Common tasks include classification (e.g., spam detection) and regression (e.g., predicting prices). Examples of algorithms in this category are Linear Regression and Decision Trees.\n- **Unsupervised Learning**: Works with unlabeled data, identifying hidden patterns or structures within it. Tasks may include clustering and dimensionality reduction. K-Means Clustering and Principal Component Analysis (PCA) are examples from this category.\n- **Reinforcement Learning**: Involves interacting with an environment to learn through rewards or penalties. The goal is to maximize cumulative reward, often used in game-playing AI and robotics control.\n\n## 2. Learn about linear regression and its use in predicting continuous outcomes.\n- **Linear Regression**:\n  - Uses labeled data where the output variable (dependent) has a linear relationship with one or more input variables (independent).\n  - Predicts continuous values, such as house prices, based on historical data.\n\n## 3. Understand decision trees and how they can be used for classification tasks.\n- **Decision Trees**: A tree-like structure that uses features to make decisions by splitting the dataset into subsets based on feature conditions until a final output is reached (e.g., classifying emails as spam or not).\n  \nFinal Quick Revision Summary:\n- Machine Learning encompasses supervised, unsupervised, and reinforcement learning techniques for data-driven decision-making.\n- Linear Regression predicts continuous outcomes.\n- Decision Trees classify based on feature splits.",
+    "num_quiz_questions": 5,
+    "quiz_level": "intermediate",
+    "quiz_style": "exam",
+    "question_type_mode": "mcq",
+    "quiz_questions": [
+        {
+            "id": 1,
+            "type": "mcq",
+            "question": "Which of the following is a task associated with unsupervised learning?",
+            "options": [
+                "A. Predicting customer churn based on past purchase history",
+                "B. Identifying clusters in customer segments based on demographics and preferences",
+                "C. Adjusting stock prices using historical data",
+                "D. Classifying emails as spam or not"
+            ],
+            "correct_answer": "B",
+            "hint": "Unsupervised learning deals with unlabeled data and pattern discovery.",
+            "level": "intermediate"
+        },
+        {
+            "id": 2,
+            "type": "mcq",
+            "question": "Linear regression is used for predicting what type of outcomes?",
+            "options": [
+                "A. Categorical variables",
+                "B. Continuous values",
+                "C. Time series data",
+                "D. Binary outputs"
+            ],
+            "correct_answer": "B",
+            "hint": "Linear regression predicts continuous numerical values.",
+            "level": "intermediate"
+        },
+        {
+            "id": 3,
+            "type": "mcq",
+            "question": "Which algorithm is specifically used for reinforcement learning and helps maximize cumulative reward?",
+            "options": [
+                "A. K-Means Clustering",
+                "B. Decision Trees",
+                "C. Linear Regression",
+                "D. Q-Learning"
+            ],
+            "correct_answer": "D",
+            "hint": "Q-learning is a model-free, off-policy temporal difference reinforcement learning algorithm.",
+            "level": "intermediate"
+        },
+        {
+            "id": 4,
+            "type": "mcq",
+            "question": "Which supervised learning method is commonly used in spam detection?",
+            "options": [
+                "A. Decision Trees",
+                "B. K-Means Clustering",
+                "C. Linear Regression",
+                "D. Naive Bayes"
+            ],
+            "correct_answer": "D",
+            "hint": "Naive Bayes classifiers are often applied to text data for tasks like spam filtering.",
+            "level": "intermediate"
+        },
+        {
+            "id": 5,
+            "type": "short_answer",
+            "question": "Define reinforcement learning and give an example application.",
+            "options": [],
+            "correct_answer": "",
+            "hint": "",
+            "level": "intermediate"
+        }
+    ],
+    "answer_key": [
+        {
+            "id": 1,
+            "type": "mcq",
+            "correct_answer": "B"
+        },
+        {
+            "id": 2,
+            "type": "mcq",
+            "correct_answer": "B"
+        },
+        {
+            "id": 3,
+            "type": "mcq",
+            "correct_answer": "D"
+        },
+        {
+            "id": 4,
+            "type": "mcq",
+            "correct_answer": "D"
+        },
+        {
+            "id": 5,
+            "type": "short_answer",
+            "correct_answer": ""
+        }
+    ],
+    "student_answers": [
+        "B. Identifying clusters in customer segments based on demographics and preferences",
+        "C. Time series data",
+        "C. Linear Regression",
+        "C. Linear Regression",
+        "Aircraft engineering."
+    ],
+    "evaluation_result": {
+        "score": 1,
+        "total": 5,
+        "percentage": 20.0,
+        "weak_areas": [
+            "Which of the following is a task associated with unsupervised learning?",
+            "Linear regression is used for predicting what type of outcomes?",
+            "Which algorithm is specifically used for reinforcement learning and helps maximize cumulative reward?",
+            "Which supervised learning method is commonly used in spam detection?"
+        ],
+        "detailed_results": [
+            {
+                "question": "Which of the following is a task associated with unsupervised learning?",
+                "your_answer": "B. Identifying clusters in customer segments based on demographics and preferences",
+                "correct_answer": "B",
+                "is_correct": false,
+                "level": "intermediate"
+            },
+            {
+                "question": "Linear regression is used for predicting what type of outcomes?",
+                "your_answer": "C. Time series data",
+                "correct_answer": "B",
+                "is_correct": false,
+                "level": "intermediate"
+            },
+            {
+                "question": "Which algorithm is specifically used for reinforcement learning and helps maximize cumulative reward?",
+                "your_answer": "C. Linear Regression",
+                "correct_answer": "D",
+                "is_correct": false,
+                "level": "intermediate"
+            },
+            {
+                "question": "Which supervised learning method is commonly used in spam detection?",
+                "your_answer": "C. Linear Regression",
+                "correct_answer": "D",
+                "is_correct": false,
+                "level": "intermediate"
+            },
+            {
+                "question": "Define reinforcement learning and give an example application.",
+                "your_answer": "Aircraft engineering.",
+                "correct_answer": "",
+                "is_correct": true,
+                "level": "intermediate"
+            }
+        ],
+        "difficulty_stats": {
+            "intermediate": {
+                "correct": 1,
+                "total": 5
+            }
+        },
+        "feedback": "You need to revise weak areas.",
+        "suggestions": [
+            "Review key concepts",
+            "Practice more questions",
+            "Focus on weak topics"
+        ]
+    },
+    "logs": [
+        {
+            "timestamp": "2026-04-23T12:07:31.739556",
+            "agent": "planner_agent",
+            "persona": "Time-constrained study planning assistant",
+            "tool_called": "create_study_plan",
+            "model_used": "qwen2.5:3b",
+            "input": {
+                "topic": "Machine Learning",
+                "time_minutes": 30,
+                "difficulty": "medium"
+            },
+            "output": {
+                "study_plan": [
+                    "Define key terms like supervised, unsupervised, and reinforcement learning.",
+                    "Learn about linear regression and its use in predicting continuous outcomes.",
+                    "Understand decision trees and how they can be used for classification tasks.",
+                    "Apply knowledge by identifying a real-world problem that could benefit from machine learning.",
+                    "Review all learned concepts to reinforce understanding before the exam."
+                ],
+                "step_count": 5
+            },
+            "status": "success"
+        },
+        {
+            "stage": "input_received",
+            "agent": "content_agent",
+            "input": {
+                "topic": "Machine Learning",
+                "difficulty": "medium",
+                "time_minutes": 30,
+                "study_plan": [
+                    "Define key terms like supervised, unsupervised, and reinforcement learning.",
+                    "Learn about linear regression and its use in predicting continuous outcomes.",
+                    "Understand decision trees and how they can be used for classification tasks.",
+                    "Apply knowledge by identifying a real-world problem that could benefit from machine learning.",
+                    "Review all learned concepts to reinforce understanding before the exam."
+                ]
+            }
+        },
+        {
+            "stage": "tool_call",
+            "tool": "read_notes",
+            "input": "Machine Learning"
+        },
+        {
+            "stage": "tool_output",
+            "tool": "read_notes",
+            "output_preview": "Machine Learning is a branch of Artificial Intelligence (AI) that enables systems to learn patterns "
+        },
+        {
+            "stage": "llm_call",
+            "model": "qwen2.5:3b",
+            "prompt_preview": "\nTopic: Machine Learning\nDifficulty: medium\nTime available: 30 minutes\n\nGuidance:\nProvide balanced explanations.\n\nTime Guidance:\nProvide moderate detail.\n\nStudy Plan:\n- Define key terms like supervise"
+        },
+        {
+            "stage": "output_generated",
+            "agent": "content_agent",
+            "status": "success",
+            "output_length": 1759,
+            "output_preview": "# Topic: Machine Learning\n\n## 1. Define key terms like supervised, unsupervised, and reinforcement learning.\n- **Supervised Learning**: Uses labeled data (input + correct output) to learn a mapping fr"
+        },
+        {
+            "agent": "quiz_agent",
+            "status": "success",
+            "input": {
+                "topic": "Machine Learning",
+                "num_questions": 5,
+                "quiz_level": "intermediate",
+                "quiz_style": "exam",
+                "question_type_mode": "mcq"
+            },
+            "output_preview": [
+                "Which of the following is a task associated with unsupervised learning?",
+                "Linear regression is used for predicting what type of outcomes?",
+                "Which algorithm is specifically used for reinforcement learning and helps maximize cumulative reward?"
+            ]
+        },
+        {
+            "agent": "evaluator_agent",
+            "status": "success",
+            "score": 1,
+            "total": 5,
+            "percentage": 20.0,
+            "weak_areas_count": 4
+        }
+    ]
+}

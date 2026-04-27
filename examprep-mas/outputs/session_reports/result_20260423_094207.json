@@ -1,0 +1,234 @@
+{
+    "user_request": "Study Machine Learning in 30 minutes",
+    "topic": "Machine Learning",
+    "time_minutes": 30,
+    "difficulty": "medium",
+    "notes_file_path": "data\\notes\\ml.txt",
+    "study_plan": [
+        "Define key terms like supervised, unsupervised, and reinforcement learning.",
+        "Learn about linear regression models and their implementation in Python.",
+        "Understand decision trees through a basic example and visualize them using graphs.",
+        "Implement k-nearest neighbors algorithm to solve a classification problem.",
+        "Summarize the Machine Learning process from data collection to final model evaluation."
+    ],
+    "lesson_content": "# Topic: Machine Learning\n\n## 1. Define key terms like supervised, unsupervised, and reinforcement learning.\n- **Supervised Learning** involves using labeled data to train a model. The goal is for the model to predict outputs based on inputs. For example, in image recognition, you might have images of cats and dogs, along with labels indicating whether each image is of a cat or a dog. A supervised learner would learn from these pairs of input (image) and output (label) to make predictions about new unseen data.\n- **Unsupervised Learning** deals with unlabeled data. The goal here is to find hidden patterns or structures within the data without any guidance on what the output should be. Clustering algorithms, like K-Means Clustering and Hierarchical Clustering, are used for this purpose. An example could be grouping customers based on their purchasing behavior without knowing how they will group themselves.\n- **Reinforcement Learning** is a type of learning where an agent learns to take actions in an environment by receiving rewards or penalties based on the outcomes of those actions. Think of it as playing a game like chess, where your goal might be to maximize your score over multiple moves.\n\n## 2. Learn about linear regression models and their implementation in Python.\n- **Linear Regression** is used for predicting continuous values (e.g., house prices). In supervised learning, you have inputs (features) and outputs (labels), and the aim of a simple linear regression model would be to find a straight line that best fits your data. The equation could look like \\( y = mx + b \\), where `m` is the slope and `b` is the intercept.\n- **Python Implementation**: In Python, you can use libraries such as scikit-learn to implement a simple linear regression model. Here’s a basic example:\n\n```python\nfrom sklearn.linear_model import LinearRegression\n\n# Example features (inputs) and labels (outputs)\nfeatures = [[1], [2], [3]]\nlabels = [4, 5, 6]\n\n# Create a linear regression object\nmodel = LinearRegression()\n\n# Train the model with the data\nmodel.fit(features, labels)\n\n# Predict using the trained model\npredictions = model.predict([[7]])\n\nprint(predictions)  # Output might be close to 7 (depending on the slope and intercept)\n```\n\n## 3. Understand decision trees through a basic example and visualize them using graphs.\n- **Decision Trees** are used for both classification and regression tasks. They work by recursively splitting data into subsets based on features until you get individual instances or predetermined stopping criteria. A simple way to think about it is like making decisions step-by-step: if condition, then action; otherwise, repeat.\n\n### Example:\nSuppose we have a dataset of customers with attributes such as age and income. To classify whether they are likely to buy insurance (yes/no), you can use decision trees. The tree splits the data based on conditions (e.g., \"if age > 30 AND income < 50k, then category = 'no'; otherwise, continue splitting).\n\n### Visualization:\nYou could create a graph where each internal node represents a feature selection and each edge represents an outcome (yes or no). For instance:\n\n- Root Node: Age\n  - Left Branch: If age > 30 -> Go to Subtree A\n    - Internal Node: Income\n      - Right Branch: If income < 50k -> Category = 'No'\n        - Leaf Node: Classification result is No\n      - Left Branch: Otherwise (income >= 50k) -> Category = 'Yes'\n        - Leaf Node: Classification result is Yes\n\n- Right Branch: If age <= 30 -> Go to Subtree B\n  - Internal Node: Income\n    - Right Branch: If income < 20k -> Category = 'No'\n      - Leaf Node: Classification result is No\n    - Left Branch: Otherwise (income >= 20k) -> Category = 'Yes'\n      - Leaf Node: Classification result is Yes\n\n- Final Decision Nodes Merge Subtrees.\n\n## 4. Implement k-nearest neighbors algorithm to solve a classification problem.\n- **k-Nearest Neighbors (k-NN)** is another popular supervised learning method for classification tasks. It works by finding the `k` closest instances in feature space from your data set and assigning the most common class label among those neighbors as its own.\n\n### Python Implementation:\n```python\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Example features (inputs) and labels (outputs)\nfeatures = [[1, 2], [3, 4], [5, 6]]\nlabels = ['A', 'B', 'C']\n\n# Create a k-NN classifier object with k=3\nmodel = KNeighborsClassifier(n_neighbors=3)\n\n# Train the model with the data\nmodel.fit(features, labels)\n\n# Predict using the trained model on new examples\nnew_data = [[7, 8], [9, 10]]\npredictions = model.predict(new_data)\n\nprint(predictions)  # Output might be ['A', 'B']\n```\n\n## Final Quick Revision Summary\n- **Key Concepts**:\n  - **Supervised Learning**: Uses labeled data to predict outputs.\n  - **Unsupervised Learning**: Identifies patterns in unlabeled data.\n  - **Reinforcement Learning**: Learns by interacting with an environment and receiving rewards or penalties.\n\n- **Common Algorithms**:\n  - **Linear Regression**: Used for continuous value predictions.\n  - **Decision Trees**: Recursive partitioning of the feature space.\n  - **Neural Networks**: Inspired by biological neural networks, used in deep learning applications.\n\n- **Applications**:\n  - Image and speech recognition\n  - Recommendation systems\n  - Fraud detection\n  - Healthcare diagnostics\n\n- **Advantages**:\n  - Handles large datasets effectively.\n  - Improves with more data.\n  - Useful for pattern recognition tasks.\n\n- **Challenges**:\n  - Requires a significant amount of labeled data.\n  - Risk of overfitting.\n  - Can be less interpretable compared to other methods.",
+    "num_quiz_questions": 5,
+    "quiz_level": "basic",
+    "quiz_style": "practice",
+    "question_type_mode": "mcq",
+    "quiz_questions": [
+        {
+            "id": 1,
+            "type": "mcq",
+            "question": "Which option best relates to the topic 'Machine Learning'?",
+            "options": [
+                "A key concept in Machine Learning",
+                "A random sports strategy",
+                "A music performance style",
+                "An unrelated cooking recipe"
+            ],
+            "correct_answer": "A key concept in Machine Learning",
+            "hint": "Think about the main concept in Machine Learning.",
+            "level": "basic"
+        },
+        {
+            "id": 2,
+            "type": "mcq",
+            "question": "Which option best relates to the topic 'Machine Learning'?",
+            "options": [
+                "A random sports strategy",
+                "An unrelated cooking recipe",
+                "A key concept in Machine Learning",
+                "A music performance style"
+            ],
+            "correct_answer": "A key concept in Machine Learning",
+            "hint": "Think about the main concept in Machine Learning.",
+            "level": "basic"
+        },
+        {
+            "id": 3,
+            "type": "mcq",
+            "question": "Which option best relates to the topic 'Machine Learning'?",
+            "options": [
+                "A random sports strategy",
+                "A music performance style",
+                "A key concept in Machine Learning",
+                "An unrelated cooking recipe"
+            ],
+            "correct_answer": "A key concept in Machine Learning",
+            "hint": "Think about the main concept in Machine Learning.",
+            "level": "basic"
+        },
+        {
+            "id": 4,
+            "type": "mcq",
+            "question": "Which option best relates to the topic 'Machine Learning'?",
+            "options": [
+                "An unrelated cooking recipe",
+                "A key concept in Machine Learning",
+                "A random sports strategy",
+                "A music performance style"
+            ],
+            "correct_answer": "A key concept in Machine Learning",
+            "hint": "Think about the main concept in Machine Learning.",
+            "level": "basic"
+        },
+        {
+            "id": 5,
+            "type": "mcq",
+            "question": "Which option best relates to the topic 'Machine Learning'?",
+            "options": [
+                "A music performance style",
+                "A random sports strategy",
+                "An unrelated cooking recipe",
+                "A key concept in Machine Learning"
+            ],
+            "correct_answer": "A key concept in Machine Learning",
+            "hint": "Think about the main concept in Machine Learning.",
+            "level": "basic"
+        }
+    ],
+    "answer_key": [
+        {
+            "id": 1,
+            "type": "mcq",
+            "correct_answer": "A key concept in Machine Learning"
+        },
+        {
+            "id": 2,
+            "type": "mcq",
+            "correct_answer": "A key concept in Machine Learning"
+        },
+        {
+            "id": 3,
+            "type": "mcq",
+            "correct_answer": "A key concept in Machine Learning"
+        },
+        {
+            "id": 4,
+            "type": "mcq",
+            "correct_answer": "A key concept in Machine Learning"
+        },
+        {
+            "id": 5,
+            "type": "mcq",
+            "correct_answer": "A key concept in Machine Learning"
+        }
+    ],
+    "student_answers": [
+        "A random sports strategy",
+        "A music performance style",
+        "A music performance style",
+        "An unrelated cooking recipe",
+        "A music performance style"
+    ],
+    "evaluation_result": {
+        "score": 0,
+        "total": 5,
+        "percentage": 0.0,
+        "weak_areas": [
+            "Which option best relates to the topic 'Machine Learning'?",
+            "Which option best relates to the topic 'Machine Learning'?",
+            "Which option best relates to the topic 'Machine Learning'?",
+            "Which option best relates to the topic 'Machine Learning'?",
+            "Which option best relates to the topic 'Machine Learning'?"
+        ],
+        "feedback": "You need to revise weak areas.",
+        "suggestions": [
+            "Review key concepts",
+            "Practice more questions",
+            "Focus on weak topics"
+        ]
+    },
+    "logs": [
+        {
+            "timestamp": "2026-04-23T09:17:07.851432",
+            "agent": "planner_agent",
+            "persona": "Time-constrained study planning assistant",
+            "tool_called": "create_study_plan",
+            "model_used": "qwen2.5:3b",
+            "input": {
+                "topic": "Machine Learning",
+                "time_minutes": 30,
+                "difficulty": "medium"
+            },
+            "output": {
+                "study_plan": [
+                    "Define key terms like supervised, unsupervised, and reinforcement learning.",
+                    "Learn about linear regression models and their implementation in Python.",
+                    "Understand decision trees through a basic example and visualize them using graphs.",
+                    "Implement k-nearest neighbors algorithm to solve a classification problem.",
+                    "Summarize the Machine Learning process from data collection to final model evaluation."
+                ],
+                "step_count": 5
+            },
+            "status": "success"
+        },
+        {
+            "stage": "input_received",
+            "agent": "content_agent",
+            "input": {
+                "topic": "Machine Learning",
+                "difficulty": "medium",
+                "time_minutes": 30,
+                "study_plan": [
+                    "Define key terms like supervised, unsupervised, and reinforcement learning.",
+                    "Learn about linear regression models and their implementation in Python.",
+                    "Understand decision trees through a basic example and visualize them using graphs.",
+                    "Implement k-nearest neighbors algorithm to solve a classification problem.",
+                    "Summarize the Machine Learning process from data collection to final model evaluation."
+                ]
+            }
+        },
+        {
+            "stage": "tool_call",
+            "tool": "read_notes",
+            "input": "Machine Learning"
+        },
+        {
+            "stage": "tool_output",
+            "tool": "read_notes",
+            "output_preview": "Machine Learning is a branch of Artificial Intelligence (AI) that enables systems to learn patterns "
+        },
+        {
+            "stage": "llm_call",
+            "model": "qwen2.5:3b",
+            "prompt_preview": "\nTopic: Machine Learning\nDifficulty: medium\nTime available: 30 minutes\n\nGuidance:\nProvide balanced explanations.\n\nTime Guidance:\nProvide moderate detail.\n\nStudy Plan:\n- Define key terms like supervise"
+        },
+        {
+            "stage": "output_generated",
+            "agent": "content_agent",
+            "status": "success",
+            "output_length": 5646,
+            "output_preview": "# Topic: Machine Learning\n\n## 1. Define key terms like supervised, unsupervised, and reinforcement learning.\n- **Supervised Learning** involves using labeled data to train a model. The goal is for the"
+        },
+        {
+            "agent": "quiz_agent",
+            "status": "fallback_used",
+            "reason": "Could not parse quiz JSON from model output"
+        },
+        {
+            "agent": "quiz_agent",
+            "status": "success",
+            "input": {
+                "topic": "Machine Learning",
+                "num_questions": 5,
+                "quiz_level": "basic",
+                "quiz_style": "practice",
+                "question_type_mode": "mcq"
+            },
+            "output_preview": [
+                "Which option best relates to the topic 'Machine Learning'?",
+                "Which option best relates to the topic 'Machine Learning'?",
+                "Which option best relates to the topic 'Machine Learning'?"
+            ]
+        },
+        {
+            "agent": "evaluator_agent",
+            "status": "success",
+            "score": 0,
+            "total": 5,
+            "weak_areas_count": 5
+        }
+    ]
+}
