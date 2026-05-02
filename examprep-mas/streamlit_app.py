@@ -889,13 +889,32 @@ def render_smart_suggestions(topic: str, difficulty: str) -> None:
 
 def render_lesson(content: str) -> None:
     st.markdown('<div class="custom-card">', unsafe_allow_html=True)
-    st.markdown("### 📖 Learning Material")
 
+    # Header
+    st.markdown("""
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+            <h3 style="margin:0;">📖 Learning Material</h3>
+            <span style="
+                background:#667eea;
+                color:white;
+                padding:4px 12px;
+                border-radius:20px;
+                font-size:0.8rem;
+            ">
+                AI Generated
+            </span>
+        </div>
+        <p style="color:#6c757d; margin-top:5px;">
+            Structured explanation based on your study plan
+        </p>
+    """, unsafe_allow_html=True)
+
+    # Content display
     if len(content) > 500:
         with st.expander("📚 View Full Lesson Content", expanded=True):
-            st.markdown(f'<div class="lesson-content">{content}</div>', unsafe_allow_html=True)
+            st.markdown(content)  # ✅ KEEP MARKDOWN (important)
     else:
-        st.markdown(f'<div class="lesson-content">{content}</div>', unsafe_allow_html=True)
+        st.markdown(content)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
